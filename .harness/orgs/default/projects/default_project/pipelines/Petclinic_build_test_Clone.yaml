@@ -123,4 +123,4 @@ pipeline:
         runMode:
           type: Manual
           timeout: 10m
-  allowStageExecutions: true
+  allowStageExecutions: false
