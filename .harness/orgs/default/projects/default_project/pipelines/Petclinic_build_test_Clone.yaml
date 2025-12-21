@@ -79,7 +79,7 @@ pipeline:
                     tags:
                       - latest
                       - <+pipeline.sequenceId>
-                    dockerfile: .devcontainer/Dockerfile
+                    dockerfile: Dockerfile
                     context: .
     - stage:
         name: Deploy
