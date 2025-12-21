@@ -3,7 +3,24 @@ service:
   identifier: petclinicservice
   serviceDefinition:
     type: Kubernetes
-    spec: {}
+    spec:
+      manifests:
+        - manifest:
+            identifier: springpetclinic_manifest
+            type: K8sManifest
+            spec:
+              store:
+                type: Github
+                spec:
+                  connectorRef: account.Github_Neus_Petclinic
+                  gitFetchType: Branch
+                  paths:
+                    - k8s/petclinic.yml
+                    - k8s/db.yml
+                  branch: main
+              skipResourceVersioning: false
+              enableDeclarativeRollback: false
+              optionalValuesYaml: false
   gitOpsEnabled: false
   orgIdentifier: default
   projectIdentifier: default_project
