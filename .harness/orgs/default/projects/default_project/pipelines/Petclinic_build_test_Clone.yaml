@@ -120,4 +120,7 @@ pipeline:
                 - AllErrors
               action:
                 type: StageRollback
+        runMode:
+          type: Manual
+          timeout: 10m
   allowStageExecutions: true
