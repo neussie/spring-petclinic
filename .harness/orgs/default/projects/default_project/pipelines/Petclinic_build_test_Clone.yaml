@@ -112,6 +112,7 @@ pipeline:
                   name: Canary Delete
                   identifier: canary_delete
                   spec: {}
+            rollbackSteps: []
         tags: {}
         failureStrategies:
           - onFailure:
