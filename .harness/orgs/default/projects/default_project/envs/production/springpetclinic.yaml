@@ -1,0 +1,6 @@
+environment:
+  name: spring-petclinic
+  identifier: springpetclinic
+  orgIdentifier: default
+  projectIdentifier: default_project
+  type: Production
