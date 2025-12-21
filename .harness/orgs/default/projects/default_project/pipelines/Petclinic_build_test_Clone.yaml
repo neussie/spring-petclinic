@@ -58,7 +58,7 @@ pipeline:
                   identifier: build_and_push
                   spec:
                     connectorRef: Docker_hub
-                    repo: neussie/spring-petclinic
+                    repo: neussie01/spring-petclinic
                     tags:
                       - latest
                       - <+pipeline.sequenceId>
