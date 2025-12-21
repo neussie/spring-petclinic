@@ -1,4 +1,6 @@
 pipeline:
+  name: Petclinic build test
+  identifier: Petclinic_build_test_Clone
   projectIdentifier: default_project
   orgIdentifier: default
   tags: {}
@@ -41,5 +43,12 @@ pipeline:
                     image: maven:3.9.3-eclipse-temurin-17
                     shell: Sh
                     command: mvn clean package dependency:copy-dependencies -Dnative.skip=true
-  identifier: Petclinic_build_test_Clone
-  name: Petclinic build test - Clone
+              - step:
+                  type: Run
+                  name: Test
+                  identifier: test
+                  spec:
+                    connectorRef: Docker_hub
+                    image: maven:3.9.3-eclipse-temurin-17
+                    shell: Sh
+                    command: mvn test
