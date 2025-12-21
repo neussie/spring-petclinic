@@ -1,0 +1,13 @@
+infrastructureDefinition:
+  name: spring-petclinic-definition
+  identifier: springpetclinicdefinition
+  orgIdentifier: default
+  projectIdentifier: default_project
+  environmentRef: springpetclinic
+  deploymentType: Kubernetes
+  type: KubernetesDirect
+  spec:
+    connectorRef: NeusK8s
+    namespace: default
+    releaseName: release-<+INFRA_KEY_SHORT_ID>
+  allowSimultaneousDeployments: false
