@@ -52,3 +52,15 @@ pipeline:
                     image: maven:3.9.3-eclipse-temurin-17
                     shell: Sh
                     command: mvn test
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: Build and Push Image
+                  identifier: build_and_push
+                  spec:
+                    connectorRef: Docker_hub
+                    repo: neussie/spring-petclinic
+                    tags:
+                      - latest
+                      - <+pipeline.sequenceId>
+                    dockerfile: Dockerfile
+                    context: .
