@@ -1,0 +1,19 @@
+template:
+  name: Maven Test
+  type: Step
+  projectIdentifier: default_project
+  orgIdentifier: default
+  spec:
+    type: Run
+    spec:
+      connectorRef: Docker_hub
+      image: maven:3.9.3-eclipse-temurin-17
+      shell: Sh
+      command: mvn test
+      reports:
+        type: JUnit
+        spec:
+          paths:
+            - target/surefire-reports/*.xml
+  identifier: Maven_Test
+  versionLabel: V1
