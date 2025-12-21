@@ -52,6 +52,11 @@ pipeline:
                     image: maven:3.9.3-eclipse-temurin-17
                     shell: Sh
                     command: mvn test
+                    reports:
+                      type: JUnit
+                      spec:
+                        paths:
+                          - target/surefire-reports/*.xml
               - step:
                   type: BuildAndPushDockerRegistry
                   name: Build and Push Image
