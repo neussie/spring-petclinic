@@ -62,5 +62,5 @@ pipeline:
                     tags:
                       - latest
                       - <+pipeline.sequenceId>
-                    dockerfile: Dockerfile
+                    dockerfile: .devcontainer/Dockerfile
                     context: .
