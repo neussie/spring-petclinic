@@ -1,0 +1,45 @@
+pipeline:
+  projectIdentifier: default_project
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: Github_Connector
+        repoName: spring-petclinic
+        build: <+input>
+  stages:
+    - stage:
+        name: Build
+        identifier: Build_and_Test
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+            override: true
+            paths: []
+          buildIntelligence:
+            enabled: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec:
+              imageSpec:
+                imageName: ubuntu-latest
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Build
+                  identifier: build
+                  spec:
+                    connectorRef: Docker_hub
+                    image: maven:3.9.3-eclipse-temurin-17
+                    shell: Sh
+                    command: mvn clean package dependency:copy-dependencies -Dnative.skip=true
+  identifier: Petclinic_build_test_Clone
+  name: Petclinic build test - Clone
