@@ -31,6 +31,7 @@ spec:
       containers:
         - name: workload
           image: neussie01/spring-petclinic:latest
+
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: postgres
@@ -41,6 +42,18 @@ spec:
                 {
                   "management.endpoint.health.probes.add-additional-paths": true
                 }
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://demo-db:5432/petclinic
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: demo-db
+                  key: username
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: demo-db
+                  key: password
           ports:
             - name: http
               containerPort: 8080
