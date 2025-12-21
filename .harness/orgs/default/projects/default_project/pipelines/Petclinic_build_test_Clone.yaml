@@ -81,3 +81,41 @@ pipeline:
                       - <+pipeline.sequenceId>
                     dockerfile: .devcontainer/Dockerfile
                     context: .
+    - stage:
+        name: Deploy
+        identifier: Deploy
+        description: ""
+        type: Deployment
+        spec:
+          deploymentType: Kubernetes
+          service:
+            serviceRef: petclinicservice
+          environment:
+            environmentRef: springpetclinic
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: springpetclinicdefinition
+          execution:
+            steps:
+              - step:
+                  type: K8sCanaryDeploy
+                  name: Canary Deploy
+                  identifier: canary_deploy
+                  spec:
+                    skipDryRun: false
+                    instanceSelection:
+                      type: Count
+                      spec:
+                        count: 1
+              - step:
+                  type: K8sCanaryDelete
+                  name: Canary Delete
+                  identifier: canary_delete
+                  spec: {}
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
