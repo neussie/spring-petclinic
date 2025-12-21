@@ -108,9 +108,9 @@ pipeline:
                       spec:
                         count: 1
               - step:
-                  type: K8sCanaryDelete
-                  name: Canary Delete
-                  identifier: canary_delete
+                  type: K8sRollingDeploy
+                  name: Rolling Deploy
+                  identifier: rolling_deploy
                   spec: {}
             rollbackSteps: []
         tags: {}
