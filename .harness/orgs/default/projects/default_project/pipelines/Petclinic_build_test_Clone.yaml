@@ -42,19 +42,12 @@ pipeline:
                     shell: Sh
                     command: mvn clean package dependency:copy-dependencies -Dnative.skip=true
               - step:
-                  type: Run
                   name: Test
                   identifier: test
-                  spec:
-                    connectorRef: Docker_hub
-                    image: maven:3.9.3-eclipse-temurin-17
-                    shell: Sh
-                    command: mvn test
-                    reports:
-                      type: JUnit
-                      spec:
-                        paths:
-                          - target/surefire-reports/*.xml
+                  template:
+                    templateRef: Maven_Test
+                    versionLabel: V1
+                    gitBranch: main
               - step:
                   type: OsvScanner
                   name: OsvScanner_1
