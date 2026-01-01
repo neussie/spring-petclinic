@@ -139,8 +139,6 @@ pipeline:
                             spec:
                               percentage: 50
                             type: Percentage
-                          delegateSelectors:
-                            - helm-delegate
                         timeout: 10m
                     - step:
                         type: K8sCanaryDelete
