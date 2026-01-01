@@ -71,7 +71,7 @@ pipeline:
                       - latest
                       - <+pipeline.sequenceId>
                     dockerfile: Dockerfile
-                    context: "."
+                    context: .
     - stage:
         name: Deploy
         identifier: Deploy
@@ -98,6 +98,18 @@ pipeline:
                       type: Count
                       spec:
                         count: 1
+              - step:
+                  type: K8sCanaryDelete
+                  name: K8sCanaryDelete_1
+                  identifier: K8sCanaryDelete_1
+                  spec: {}
+                  timeout: 10m
+                  failureStrategies:
+                    - onFailure:
+                        errors:
+                          - AllErrors
+                        action:
+                          type: StageRollback
               - step:
                   type: K8sRollingDeploy
                   name: Rolling Deploy
