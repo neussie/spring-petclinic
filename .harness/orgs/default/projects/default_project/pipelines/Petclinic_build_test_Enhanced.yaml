@@ -73,6 +73,42 @@ pipeline:
                     dockerfile: Dockerfile
                     context: .
     - stage:
+        name: Security
+        identifier: Security
+        description: ""
+        type: SecurityTests
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+            override: true
+          buildIntelligence:
+            enabled: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec:
+              imageSpec:
+                imageName: ubuntu-latest
+          execution:
+            steps:
+              - step:
+                  type: OsvScanner
+                  name: OsvScanner_1
+                  identifier: OsvScanner_1
+                  spec:
+                    target:
+                      detection: auto
+                      type: repository
+                    advanced:
+                      log:
+                        level: info
+                      args: {}
+                    mode: orchestration
+                    config: default
+    - stage:
         name: Deploy
         identifier: Deploy
         description: ""
@@ -100,7 +136,7 @@ pipeline:
                         count: 1
               - step:
                   type: K8sCanaryDelete
-                  name: K8sCanaryDelete_1
+                  name: K8sCanaryDelete
                   identifier: K8sCanaryDelete_1
                   spec: {}
                   timeout: 10m
