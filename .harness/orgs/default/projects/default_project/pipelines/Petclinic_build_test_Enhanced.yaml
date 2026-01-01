@@ -1,0 +1,116 @@
+pipeline:
+  projectIdentifier: default_project
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: Github_Connector
+        repoName: spring-petclinic
+        build: <+input>
+  stages:
+    - stage:
+        name: Build
+        identifier: Build_and_Test
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            paths: []
+          buildIntelligence:
+            enabled: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec:
+              imageSpec:
+                imageName: ubuntu-latest
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Build
+                  identifier: build
+                  spec:
+                    connectorRef: Docker_hub
+                    image: maven:3.9.3-eclipse-temurin-17
+                    shell: Sh
+                    command: mvn clean package dependency:copy-dependencies -Dnative.skip=true
+              - step:
+                  name: Test
+                  identifier: test
+                  template:
+                    templateRef: Maven_Test
+                    versionLabel: V1
+                    gitBranch: main
+              - step:
+                  type: OsvScanner
+                  name: OsvScanner_1
+                  identifier: OsvScanner_1
+                  spec:
+                    target:
+                      detection: auto
+                      type: repository
+                    advanced:
+                      log:
+                        level: info
+                      args: {}
+                    mode: orchestration
+                    config: default
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: Build and Push Image
+                  identifier: build_and_push
+                  spec:
+                    connectorRef: Docker_hub
+                    repo: neussie01/spring-petclinic
+                    tags:
+                      - latest
+                      - <+pipeline.sequenceId>
+                    dockerfile: Dockerfile
+                    context: "."
+    - stage:
+        name: Deploy
+        identifier: Deploy
+        description: ""
+        type: Deployment
+        spec:
+          deploymentType: Kubernetes
+          service:
+            serviceRef: petclinicservice
+          environment:
+            environmentRef: springpetclinic
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: springpetclinicdefinition
+          execution:
+            steps:
+              - step:
+                  type: K8sCanaryDeploy
+                  name: Canary Deploy
+                  identifier: canary_deploy
+                  spec:
+                    skipDryRun: false
+                    instanceSelection:
+                      type: Count
+                      spec:
+                        count: 1
+              - step:
+                  type: K8sRollingDeploy
+                  name: Rolling Deploy
+                  identifier: rolling_deploy
+                  spec: {}
+            rollbackSteps: []
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
+  allowStageExecutions: true
+  identifier: Petclinic_build_test_Enhanced
+  name: Petclinic build test - Enhanced
