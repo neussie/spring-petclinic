@@ -171,3 +171,15 @@ pipeline:
   allowStageExecutions: true
   identifier: Petclinic_build_test_Enhanced
   name: Petclinic build test - Enhanced
+  notificationRules:
+    - name: Pipeline
+      identifier: Pipeline
+      pipelineEvents:
+        - type: AllEvents
+      notificationMethod:
+        type: Email
+        spec:
+          userGroups:
+            - account._account_all_users
+          recipients: []
+      enabled: true
