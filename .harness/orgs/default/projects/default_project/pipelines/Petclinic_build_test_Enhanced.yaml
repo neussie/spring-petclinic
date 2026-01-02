@@ -141,6 +141,23 @@ pipeline:
                             type: Percentage
                         timeout: 10m
                     - step:
+                        type: Wait
+                        name: Wait
+                        identifier: Wait
+                        spec:
+                          duration: 30s
+                    - step:
+                        type: Http
+                        name: Http_1
+                        identifier: Http_1
+                        spec:
+                          url: https://www.FILL-IN-HERE.com
+                          method: GET
+                          headers: []
+                          inputVariables: []
+                          outputVariables: []
+                        timeout: 10s
+                    - step:
                         type: K8sCanaryDelete
                         name: K8sCanaryDelete
                         identifier: K8sCanaryDelete
