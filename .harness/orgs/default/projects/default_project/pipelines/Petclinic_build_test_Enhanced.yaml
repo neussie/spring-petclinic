@@ -195,9 +195,6 @@ pipeline:
                 - AllErrors
               action:
                 type: StageRollback
-        runMode:
-          type: Manual
-          timeout: 1d
         when:
           pipelineStatus: Success
           condition: <+pipeline.stages.Security.status> == "SUCCEEDED"
