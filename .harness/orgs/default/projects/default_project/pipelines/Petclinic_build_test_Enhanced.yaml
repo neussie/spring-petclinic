@@ -147,6 +147,11 @@ pipeline:
                         spec:
                           duration: 30s
                     - step:
+                        type: K8sDiff
+                        name: K8sDiff_1
+                        identifier: K8sDiff_1
+                        spec: {}
+                    - step:
                         type: HarnessApproval
                         name: HarnessApproval
                         identifier: HarnessApproval
