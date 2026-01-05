@@ -200,6 +200,7 @@ pipeline:
           timeout: 1d
         when:
           pipelineStatus: Success
+          condition: <+pipeline.stages.Security.status> == "SUCCEEDED"
   allowStageExecutions: true
   identifier: Petclinic_build_test_Enhanced
   name: Petclinic build test - Enhanced
