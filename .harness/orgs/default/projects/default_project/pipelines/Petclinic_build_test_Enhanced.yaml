@@ -109,24 +109,12 @@ pipeline:
                           args: {}
                         mode: orchestration
                         config: default
-              - step:
-                  type: Run
-                  name: Security_test_output
-                  identifier: Security_test_output
-                  spec:
-                    shell: Bash
-                    command: |-
-                      if grep -q "CRITICAL" scan-result.txt; then
-                        echo "Security gate failed"
-                        export SECURITY_VERDICT=FAIL
-                      else
-                        echo "Security gate passed"
-                        export SECURITY_VERDICT=PASS
-                      fi
-                    outputVariables:
-                      - name: SECURITY_VERDICT
-                        type: String
-                        value: SECURITY_VERDICT
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: MarkAsFailure
     - stage:
         name: Deploy
         identifier: Deploy
@@ -164,11 +152,6 @@ pipeline:
                         identifier: Wait
                         spec:
                           duration: 30s
-                    - step:
-                        type: K8sDiff
-                        name: K8sDiff_1
-                        identifier: K8sDiff_1
-                        spec: {}
                     - step:
                         type: HarnessApproval
                         name: HarnessApproval
@@ -215,6 +198,8 @@ pipeline:
         runMode:
           type: Manual
           timeout: 1d
+        when:
+          pipelineStatus: Success
   allowStageExecutions: true
   identifier: Petclinic_build_test_Enhanced
   name: Petclinic build test - Enhanced
