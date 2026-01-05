@@ -189,6 +189,9 @@ pipeline:
                 - AllErrors
               action:
                 type: StageRollback
+        runMode:
+          type: Manual
+          timeout: 1d
   allowStageExecutions: true
   identifier: Petclinic_build_test_Enhanced
   name: Petclinic build test - Enhanced
