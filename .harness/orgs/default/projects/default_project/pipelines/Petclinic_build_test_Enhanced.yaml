@@ -146,6 +146,12 @@ pipeline:
                               percentage: 50
                             type: Percentage
                         timeout: 10m
+                        failureStrategies:
+                          - onFailure:
+                              errors:
+                                - AllErrors
+                              action:
+                                type: MarkAsFailure
                     - step:
                         type: Wait
                         name: Wait
@@ -167,6 +173,7 @@ pipeline:
                             disallowPipelineExecutor: false
                           approverInputs: []
                         timeout: 1d
+                      contextType: Pipeline
                     - step:
                         type: K8sCanaryDelete
                         name: K8sCanaryDelete
