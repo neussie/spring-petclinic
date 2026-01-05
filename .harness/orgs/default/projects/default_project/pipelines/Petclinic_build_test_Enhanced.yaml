@@ -109,6 +109,24 @@ pipeline:
                           args: {}
                         mode: orchestration
                         config: default
+              - step:
+                  type: Run
+                  name: Security_test_output
+                  identifier: Security_test_output
+                  spec:
+                    shell: Bash
+                    command: |-
+                      if grep -q "CRITICAL" scan-result.txt; then
+                        echo "Security gate failed"
+                        export SECURITY_VERDICT=FAIL
+                      else
+                        echo "Security gate passed"
+                        export SECURITY_VERDICT=PASS
+                      fi
+                    outputVariables:
+                      - name: SECURITY_VERDICT
+                        type: String
+                        value: SECURITY_VERDICT
     - stage:
         name: Deploy
         identifier: Deploy
