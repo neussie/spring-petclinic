@@ -18,6 +18,7 @@ pipeline:
           cloneCodebase: true
           caching:
             paths: []
+            enabled: true
           buildIntelligence:
             enabled: true
           platform:
